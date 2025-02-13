@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payout_methods', function (Blueprint $table) {
+        Schema::create('gcash_accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id');
+            $table->string('phone_number');
+            $table->string('account_name');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payout_methods');
+        Schema::dropIfExists('gcash_accounts');
     }
 };

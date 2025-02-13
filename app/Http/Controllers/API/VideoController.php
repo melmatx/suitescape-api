@@ -116,8 +116,8 @@ class VideoController extends Controller
         }
 
         return response()->json([
-            'approved' => true,
             'message' => 'Video approved successfully',
+            'is_approved' => true,
         ]);
     }
 }

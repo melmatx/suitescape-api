@@ -27,6 +27,10 @@ Broadcast::channel('private-active-status.{id}', function ($user) {
     return (bool) $user;
 });
 
+Broadcast::channel('private-payment.{id}', function ($user) {
+    return (bool) $user;
+});
+
 Broadcast::channel('private-video-transcoding.{id}', function ($user, $id) {
     $video = Video::find($id);
     $listing = Listing::find($id);

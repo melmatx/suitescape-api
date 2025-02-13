@@ -40,7 +40,7 @@ class ListingController extends Controller
 
     public function __construct(ListingRetrievalService $listingRetrievalService, ListingCreateService $listingCreateService, ListingUpdateService $listingUpdateService, ListingDeleteService $listingDeleteService)
     {
-        $this->middleware('auth:sanctum')->only(['createListing', 'uploadListingImage', 'uploadListingVideo', 'likeListing', 'saveListing']);
+        $this->middleware('auth:sanctum')->only(['createListing', 'updateListing', 'uploadListingImage', 'uploadListingVideo', 'likeListing', 'saveListing']);
 
         $this->listingRetrievalService = $listingRetrievalService;
         $this->listingCreateService = $listingCreateService;
@@ -92,7 +92,10 @@ class ListingController extends Controller
      */
     public function searchListings(SearchRequest $request)
     {
-        return ListingResource::collection($this->listingRetrievalService->searchListings($request->search_query, $request->limit));
+        return ListingResource::collection($this->listingRetrievalService->searchListings(
+            $request->validated('search_query'),
+            $request->validated('limit')
+        ));
     }
 
     /**
@@ -102,6 +105,7 @@ class ListingController extends Controller
      * The date range is used to calculate the current price of the entire place.
      *
      * @return ListingResource
+     * @throws Exception
      */
     public function getListing(DateRangeRequest $request, string $id)
     {
@@ -171,7 +175,7 @@ class ListingController extends Controller
      */
     public function getUnavailableDates(DateRangeRequest $request, string $id)
     {
-        $unavailableDates = $this->listingRetrievalService->getUnavailableDatesFromRange($id, $request->validated()['start_date'], $request->validated()['end_date']);
+        $unavailableDates = $this->listingRetrievalService->getUnavailableDatesFromRange($id, $request->validated('start_date'), $request->validated('end_date'));
 
         return UnavailableDateResource::collection($unavailableDates);
     }
